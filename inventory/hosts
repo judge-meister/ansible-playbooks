@@ -8,29 +8,32 @@ ansible_python_interpreter=/usr/bin/python3
 docker0
 docker1
 
+[docker]
+vmdocker
+docker0
+docker1
+
 [lxc]
 gallery
 torrent
-emby
 
-[usually_on]
+[production]
 sandbox
 debianjet
 vmsmb
 vmdocker
+docker0
+docker1
+gallery
+torrent
 
 [arch]
 anarchy
 
 [debian:children]
-swarm
-usually_on
+production
 
 [debian:vars]
 ansible_python_interpreter=/usr/bin/python3
-
-# not used
-#skynet
-#kali
 
 
