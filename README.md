@@ -1,3 +1,7 @@
 
-ansible-playbook -i vmdocker,vmsmb,firefox,debianjet,gallery,torrent min_setup.yml
+# Ansible Playbook Collection
+
+## First Playbook - ping
+
+* ansible-playbook playbook/ping.yml
 
