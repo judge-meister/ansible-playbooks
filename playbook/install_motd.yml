@@ -1,0 +1,50 @@
+---
+#
+# install my own motd
+# ansible-playbook playbook/install_motd.yml
+#
+- name: install motd
+  hosts: production
+  remote_user: judge
+  become: yes
+
+  tasks:
+  - name: install dependencies
+    apt:
+      name: figlet
+      state: present
+      update_cache: true
+
+  - name: copy roman.flf
+    ansible.builtin.copy:
+      src: ../files/roman.flf
+      dest: /usr/share/figlet/roman.flf
+      owner: root
+      group: root
+
+  - name: copy 05-banner
+    ansible.builtin.copy:
+      src: ../files/05-banner
+      dest: /etc/update-motd.d/05-banner
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: copy empty motd file
+    ansible.builtin.copy:
+      src: ../files/motd
+      dest: /etc/motd
+      owner: root
+      group: root
+
+  - name: disable PrintLastLog in sshd_config
+    ansible.builtin.replace:
+      path: /etc/ssh/sshd_config
+      regexp: '^#PrintLastLog yes$'
+      replace: 'PrintLastLog no'
+
+  # should really be using a _handler_ for this one
+  - name: Restart service sshd, in all cases
+    ansible.builtin.service:
+      name: sshd
+      state: restarted

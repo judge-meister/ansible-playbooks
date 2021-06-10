@@ -1,0 +1,4 @@
+#!/bin/bash
+echo
+figlet -f roman -w 120 $(hostname)
+
