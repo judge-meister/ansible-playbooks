@@ -1,0 +1,13 @@
+---
+#
+# ansible-playbook -i inventory/hosts ping.yml 
+# ansible-playbook ping.yml
+#
+- name: ping test
+  hosts: production
+  remote_user: judge
+
+  tasks:
+  - name: ping test selected machines
+    ping:
+
