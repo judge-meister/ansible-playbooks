@@ -1,0 +1,59 @@
+---
+#
+# ansible-playbook -i docker0,docker1 install_docker.yml 
+#
+- name: install docker
+  hosts: all
+  remote_user: judge
+
+  tasks:
+  - name: install dependencies
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: true
+    loop: [ apt-transport-https, ca-certificates, curl, gnupg-agent, software-properties-common, python3-pip ]
+    become: yes
+
+  # Install (docker-compose) for Python 3 
+  - name: install docker-compose
+    pip:
+      name: docker-compose
+      executable: pip3
+    become: yes
+
+  - name : Add Docker GPG apt Key
+    apt_key: 
+      url: https://download.docker.com/linux/debian/gpg 
+      state: present
+    become: yes
+ 
+  - name : Add Docker Repository
+    apt_repository: 
+      repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable 
+      state: present
+    register: apt_repository_output
+    become: yes
+ 
+  - name : Update apt cache
+    apt: 
+      update_cache: true 
+      state: latest
+    become: yes
+
+  - name : Install docker-ce docker-ce-cli containerd.io
+    apt: 
+      name: "{{ item }}"
+      state: latest
+    loop: [ docker-ce, docker-ce-cli, containerd.io ]
+    become: yes
+
+
+# from https://docs.docker.com/engine/install/debian/
+    
+# sudo apt install apt-transport-https  ca-certificates  curl  gnupg-agent  software-properties-common
+# curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+# sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+# sudo apt-get update
+# sudo apt-get install docker-ce docker-ce-cli containerd.io
+
