@@ -9,5 +9,9 @@
 
 Playbook to install a custom motd on all systems.
 
-* anible-playbook playbook/install_motd.yml
+* ansible-playbook playbook/install_motd.yml
+
+## Initial Setup Playbook
+
+* ansible-playbook playbook/min_setup.yml
 
