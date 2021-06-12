@@ -1,0 +1,38 @@
+---
+#
+# ansible-playbook  -i vmdocker,vmsmb,firefox,debianjet,gallery,torrent  min_setup.yml 
+#
+- name: Copy .vimrc .bash_aliases an install minimum packages
+  hosts: all
+  remote_user: judge
+  become: true
+
+  tasks:
+  - name: to /home/judge
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_list:
+      - src: ../files/my.vimrc
+        dest: ~/.vimrc
+      - src: ../files/my.bash_aliases
+        dest: ~/.bash_aliases
+    become: false
+
+  - name: to /root/
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_list:
+      - src: ../files/my.vimrc
+        dest: ~/.vimrc
+      - src: ../files/my.bash_aliases
+        dest: ~/.bash_aliases
+
+  - name: install default packages (vim, git, man, curl, qemu-guest-agent)
+    apt: 
+      name: "{{ item }}" 
+      state: present 
+      update_cache: true
+    loop: [ python3-apt, vim, git, man, curl, qemu-guest-agent ]
+
