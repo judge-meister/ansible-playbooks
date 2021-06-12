@@ -29,6 +29,8 @@ torrent
 
 [arch]
 anarchy
+#archpad
+#archmac
 
 [debian:children]
 production
