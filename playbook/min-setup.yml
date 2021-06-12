@@ -3,7 +3,7 @@
 # ansible-playbook  -i vmdocker,vmsmb,firefox,debianjet,gallery,torrent  min_setup.yml 
 #
 - name: Copy .vimrc .bash_aliases an install minimum packages
-  hosts: all
+  hosts: production
   remote_user: judge
   become: true
 

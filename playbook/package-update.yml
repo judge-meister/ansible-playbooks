@@ -1,0 +1,20 @@
+---
+#
+# ansible-playbook -i inventory/hosts apt-update.yml 
+# ansible-playbook -i server,lxc,usually_on,k3s,swarm apt-update.yml
+# ansible-playbook package-update.yml
+#
+- name: update packages
+  hosts: production
+  become: 'yes'
+  remote_user: judge
+
+# currently trying to catch when transmission is updated to trigger
+# reinstalling the personalisations I like to use
+
+  tasks:
+    - name: run apt update and apt upgrade or pacman -Syu
+      package:
+        upgrade: 'yes'
+        update_cache: 'yes'
+
