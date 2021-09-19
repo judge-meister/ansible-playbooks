@@ -30,6 +30,14 @@
       group: root
       mode: 0755
 
+  - name: copy 06-os-release
+    ansible.builtin.copy:
+      src: ../files/06-os-release
+      dest: /etc/update-motd.d/06-os-release
+      owner: root
+      group: root
+      mode: 0755
+
   - name: copy empty motd file
     ansible.builtin.copy:
       src: ../files/motd
