@@ -58,6 +58,12 @@ setup_fstab()
   then
     echo -e "proxmox:/zdata  \t/zdata  \tnfs4\tdefaults,auto\t0 0" >> /etc/fstab
   fi
+
+  grep -q proxmox /etc/hosts
+  if [ $? -eq 1 ]
+  then
+    echo "192.168.0.30	proxmox.localdomain	proxmox" >> /etc/hosts
+  fi
 }
 
 # ---------------------------------------------------------------------

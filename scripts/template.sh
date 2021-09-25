@@ -1,7 +1,6 @@
 #!/bin/bash
 set -x
-. ./set_hostname
-common.sh
+. ./common.sh
 run_as_root
 
 # Install Script for ... VM
@@ -12,7 +11,7 @@ set_hostname
 
 # ---------------------------------------------------------------------
 # install packages
-apt install -y ...
+apt install -y man vim nfs-client
 
 # do sudoers
 do_sudo
