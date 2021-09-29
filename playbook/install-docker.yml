@@ -27,10 +27,13 @@
       url: https://download.docker.com/linux/debian/gpg 
       state: present
     become: yes
- 
+
+  - shell: lsb_release -cs
+    register: debian_name
+
   - name : Add Docker Repository
     apt_repository: 
-      repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable 
+      repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ debian_name.stdout }} stable 
       state: present
     register: apt_repository_output
     become: yes
