@@ -1,5 +1,6 @@
 [server]
 proxmox
+backuppve
 
 [server:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -26,6 +27,7 @@ docker0
 docker1
 gallery
 torrent
+torrentvm
 
 [arch]
 anarchy
