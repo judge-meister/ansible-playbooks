@@ -1,7 +1,6 @@
 #!/bin/bash
 set -x
-. ./set_hostname
-common.sh
+. ./common.sh
 run_as_root
 
 # Install Script for EMBY VM
@@ -23,6 +22,9 @@ dpkg -i emby-server-deb_4.6.4.0_amd64.deb
 
 # ---------------------------------------------------------------------
 # other configuration tasks
+
+# ---------------------------------------------------------------------
+# fstab - setup mount points and mounting of /zdata and /zvideos from proxmox (192.168.0.30)
 setup_fstab
 
 # ---------------------------------------------------------------------
