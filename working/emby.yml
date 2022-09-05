@@ -1,0 +1,20 @@
+---
+
+- name: Emby Playbook
+  hosts: emby
+  gather_facts: true
+  remote_user: judge
+  become: true
+  roles:
+    - role: prereqs
+    - role: emby
+#
+# set hostname to emby
+# install packages
+# add judge to sudoers
+# setup /etc/fstab and /etc/hosts
+# setup apache2 site file
+# enable rewrite apache2 module
+# static network address / or rely on pfsense dhcp table
+# reboot if hostname changed
+#

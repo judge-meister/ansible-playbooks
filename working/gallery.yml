@@ -1,0 +1,21 @@
+---
+
+- name: Gallery Playbook
+  hosts: gallery
+  gather_facts: true
+  remote_user: judge
+  become: true
+  roles:
+    - role: prereqs
+    - role: gallery
+
+#
+# set hostname to gallery
+#- install packages
+# add judge to sudoers
+#- setup /etc/fstab and /etc/hosts
+#- setup apache2 site file
+#- enable rewrite apache2 module
+# static network address / or rely on pfsense dhcp table
+# reboot if hostname changed
+#

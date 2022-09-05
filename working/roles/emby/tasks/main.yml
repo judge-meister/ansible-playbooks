@@ -1,0 +1,17 @@
+---
+- name: Install required packages
+  ansible.builtin.package:
+    name:
+      - sudo
+      - man
+      - vim
+      - curl
+      - file
+      - htop
+      - nfs-common
+    state: present
+    update_cache: true
+#
+# get emby deb file from github
+# install emby.deb file
+#

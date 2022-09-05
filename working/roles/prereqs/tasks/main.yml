@@ -1,0 +1,30 @@
+---
+- name: Add zvideos to fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: ^proxmox:/zvideos    /zvideos
+    line: proxmox:/zvideos    /zvideos    nfs4    defaults,auto 0 0
+
+- name: Add zdata to fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: ^proxmox:/zdata    /zdata
+    line: proxmox:/zdata    /zdata    nfs4    defaults,auto 0 0
+
+- name: Add proxmox to hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: 192.168.0.30    proxmox.localdomain    proxmox
+    line: 192.168.0.30    proxmox.localdomain    proxmox
+
+- name: Copy sudoers files
+  ansible.builtin.copy:
+    src: "{{ item }}_sudo"
+    dest: "/etc/sudoers.d/{{ item }}"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0440
+    validate: /usr/sbin/visudo -cf %s
+  with_items:
+    - judge
