@@ -1,6 +1,6 @@
 ---
 #
-# ansible-playbook  -i vmdocker,vmsmb,firefox,debianjet,gallery,torrent  min_setup.yml 
+# ansible-playbook  -i vmdocker,vmsmb,firefox,debianjet,gallery,torrent  min_setup.yml
 #
 - name: Copy .vimrc .bash_aliases an install minimum packages
   hosts: production
@@ -8,10 +8,11 @@
   become: true
 
   tasks:
-  - name: to /home/judge
-    copy:
+  - name: Copy stuff to /home/judge
+    ansible.builtin.copy:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
+      mode: '0644'
     with_list:
       - src: ../files/my.vimrc
         dest: ~/.vimrc
@@ -19,20 +20,26 @@
         dest: ~/.bash_aliases
     become: false
 
-  - name: to /root/
-    copy:
+  - name: Copy stuff to /root/
+    ansible.builtin.copy:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
+      mode: '0644'
     with_list:
       - src: ../files/my.vimrc
         dest: ~/.vimrc
       - src: ../files/my.bash_aliases
         dest: ~/.bash_aliases
 
-  - name: install default packages (vim, git, man, curl, qemu-guest-agent)
-    apt: 
-      name: "{{ item }}" 
-      state: present 
+  - name: Install default packages (vim, git, man, curl, qemu-guest-agent)
+    ansible.builtin.apt:
+      name:
+        - python3-apt
+        - vim
+        - git
+        - man
+        - curl
+        - qemu-guest-agent
+      state: present
       update_cache: true
-    loop: [ python3-apt, vim, git, man, curl, qemu-guest-agent ]
-
+#

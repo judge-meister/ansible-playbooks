@@ -15,7 +15,7 @@ docker0
 docker1
 
 [lxc]
-gallery
+#gallery
 torrent
 
 [production]
