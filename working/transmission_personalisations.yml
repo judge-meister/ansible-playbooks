@@ -1,0 +1,54 @@
+---
+#
+# ansible-playbook -i inventory/hosts dark-transmission.yml 
+# ansible-playbook -i torrent, dark-transmission.yml
+# ansible-playbook dark-transmission.yml
+#
+- name: fix transmission dark theme and change run as user
+  hosts: torrent
+  become: true
+  remote_user: judge
+
+  tasks:
+    - name: clone the transmission-web-soft-theme from eigenlab.org
+      git:
+        repo: https://git.eigenlab.org/sbiego/transmission-web-soft-theme.git
+        dest: /root/eigenlab.org/
+
+    - name: update transmission theme
+      register: installdarktheme
+      shell: |
+        grep transmission/soft-dark /usr/share/transmission/web/index.html
+        if [ $? -eq 1 ]; then
+          echo 1 > dark
+          ./install.sh < dark
+        fi
+      args:
+        chdir: /root/eigenlab.org/
+        executable: /bin/bash
+      changed_when: "'Soft dark theme successfully applied!' in installdarktheme.stdout"
+
+#    - debug:
+#        msg: "{{installdarktheme.stdout}}"
+
+    # change which user transmission-daemon is run as
+    
+    - name: ensure transmission-daemon is stopped
+      service:
+        name: transmission-daemon
+        state: stopped
+
+    - name: copy new transmission-daemon.service file to run daemon as judge
+      copy:
+        src: ../files/transmission-daemon.service
+        dest: /lib/systemd/system/transmission-daemon.service
+        owner: root
+        group: root
+        mode: "u=rw,g=r,o=r"
+
+    - name: ensure transmission-daemon is started
+      service:
+        daemon_reload: yes
+        name: transmission-daemon
+        state: started
+          

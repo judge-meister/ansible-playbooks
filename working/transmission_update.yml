@@ -1,0 +1,29 @@
+---
+#
+# ansible-playbook transmission_update.yml
+#
+- name: apt update
+  hosts: torrent
+  become: true
+  remote_user: judge
+
+# currently trying to catch when transmission is updated to trigger
+# reinstalling the personalisations I like to use
+
+  tasks:
+    - name: run apt update and apt upgrade
+      apt:
+        #upgrade: yes
+        update_cache: yes
+
+    - name: is transmission to be upgraded
+      register: upgradable
+      shell: |
+        apt list --upgradable
+      changed_when: "'transmission' in upgradable.stdout"
+      
+    - debug: var=upgradable
+    
+    - name: apply personal mods to transmission
+      debug: "{{ upgradable.stdout }}"
+      when: "'transmission' in upgradable.stdout"
