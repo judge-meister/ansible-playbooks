@@ -11,7 +11,18 @@
       - nfs-common
     state: present
     update_cache: true
-#
-# get emby deb file from github
-# install emby.deb file
-#
+
+- name: Download emby deb file
+  ansible.builtin.get_url:
+    url: https://github.com/MediaBrowser/Emby.Releases/releases/download/{{ item }}/emby-server-deb_{{ item }}_amd64.deb
+    dest: /tmp/emby-server_amd64.deb
+    mode: '0644'
+    with_item:
+      - 4.7.6.0
+  when: ansible_facts['distribution'] == "Debian"
+
+- name: Install Emby
+  ansible.builtin.package:
+    name: /tmp/emby-server_amd64.deb
+    state: present
+
